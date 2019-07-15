@@ -10,8 +10,8 @@ Optimization objectives:
   - Focus on optimising the code for execution time through various techniques such as:
   
     -> Efficient memory access and data structures. Keep data small and close together in memory. 
-       -> Cacheline considerations (indirect write avoidance) 
        
+    -> Cacheline considerations (indirect write avoidance) 
        Keep memory which is use in a calculation next to each other in memory so it can be loaded 
        on the same cacheline. 
        
