@@ -25,11 +25,11 @@ public:
 
 	// Grid properties (Need to check of i need to +-1 off ICU and NBD due to difference in indexing between matlab and every other language..) 
 	// static to allow it to set size of array. (promises compiler not to change the stati variable for any instance of this class) 
-	static const int ICL = 0;			// Aerofoil inner boundary (1st point)
-	static const int ICU = 101;			// Aerofoil inner boundary (Last point)
-	static const int NBD = 280;			// Outer boundary around aerofoil (Number of points)
+	static const int ICL = 0;		// Aerofoil inner boundary (1st point)
+	static const int ICU = 101;		// Aerofoil inner boundary (Last point)
+	static const int NBD = 280;		// Outer boundary around aerofoil (Number of points)
 	static const int NPTI = 2940;		// Total number of grid points
-	static const int NC = 5600;			// Total number of cells
+	static const int NC = 5600;		// Total number of cells
 	static const int NEDGE = 8540;		// Total number of edges
 	static const int NCYC = 2000;		// Number of iterations
 
@@ -52,29 +52,29 @@ public:
 
 
 	// Simulation properties 
-	const float FMACH = 0.5f;			// Freestream Mach number
+	const float FMACH = 0.5f;		// Freestream Mach number
 	const float AL = 2 * (pi / 180);	// Angle of incidence (rad)
-	const float CFL = 5.4f;				// Courant number 
+	const float CFL = 5.4f;			// Courant number 
 
 	// Runga kutta properties for time discretization
-	const int NRKS	  = 4;							// Order of rungakutta method	
+	const int NRKS	  = 4;					// Order of rungakutta method	
 	const float ST[4] = {	(0.25f * CFL),			// Array of coefficients
-							(0.33333f * CFL),
-							(0.5f * CFL),
-							(CFL)				};
+				(0.33333f * CFL),
+				(0.5f * CFL),
+				(CFL)		};
 
 	// Declare aerodynamic variables and initial conditions for simulation
-	const float GM = 1.4f;								// Gamma of air
+	const float GM = 1.4f;							// Gamma of air
 	const float GMm1 = GM - 1.0f;						// Gamma - 1 (Precalculated as it needs to be calcualted alot, could use macro..) 
 	const float SA = std::sin(AL);						// Note sin is in radians. Precalcuted for speed. 
 	const float CA = std::cos(AL);
-	const float rho0 = 1.0f;							// Free stream normalized density
-	const float P0 = 1.0f;								// Freestream normalized pressure 
-	const float C0 = std::pow((GM * rho0 / P0), 0.5f);	// Freestream speed of sound.
+	const float rho0 = 1.0f;						// Free stream normalized density
+	const float P0 = 1.0f;							// Freestream normalized pressure 
+	const float C0 = std::pow((GM * rho0 / P0), 0.5f);			// Freestream speed of sound.
 	const float U0 = FMACH * C0 * CA;					//Free stream horizontal velocity
 	const float V0 = FMACH * C0 * SA;					// Freestream vertical velocity 
-	const float E0 = ((P0) / (rho0 * GMm1)) + (0.5f * ((U0 * U0) + (V0 * V0)));			// Freestream energy 
-	const float CPD = GM * FMACH * FMACH * 0.5f;		// Freestream dynamic head. 
+	const float E0 = ((P0) / (rho0 * GMm1)) + (0.5f * ((U0 * U0) + (V0 * V0)));	// Freestream energy 
+	const float CPD = GM * FMACH * FMACH * 0.5f;					// Freestream dynamic head. 
 
 	/* Member functions for class to open file and extact data */
 	void	IF1_extract();
@@ -86,12 +86,12 @@ public:
 	struct DS_FLUX
 	{
 	public:
-		float Q[NC][4];				  // Declare array data 
-		float DX, DY, U, Vv, QK, DPr; // Declare variables 
+		float Q[NC][4];			 // Declare array data 
+		float DX, DY, U, Vv, QK, DPr; 	 // Declare variables 
 
 		/* Struct member functions */ 
 		DS_FLUX() : Q{}, DX(0.0f), DY(0.0f), U(0.0f), Vv(0.0f), QK(0.0f), DPr(0.0f)
-					{ d_print("Flux datastructure created")}
+				{ d_print("Flux datastructure created")}
 		~DS_FLUX()	{ d_print("Flux datastructured destroyed") }
 		
 		// initaits FLUX array at every function call. 
@@ -101,10 +101,10 @@ public:
 	struct DS_DISS
 	{
 	public:
-		float D[NC][4], DW2[NC][4], DELW[4], T[4];		// Declare array data (Changes in simulation)
+		float D[NC][4], DW2[NC][4], DELW[4], T[4];	// Declare array data (Changes in simulation)
 		float C2, U, Vv, DX, DY, DL2, A, EPS2, EPS4;	// Declare variables
-		const float RK2 = 0.5f;							// 1st dissapation parameter, k2. // Const values 
-		const float RK4 = 0.008f;						// 2nd dissapation parameter, k4. 
+		const float RK2 = 0.5f;				// 1st dissapation parameter, k2. // Const values 
+		const float RK4 = 0.008f;			// 2nd dissapation parameter, k4. 
 
 		/* Struct member functions */
 		DS_DISS() : D{}, DW2{}, DELW{}, T{}, C2(0.0f), U(0.0f), Vv(0.0f), DX(0.0f), DY(0.0f), DL2(0.0f), A(0.0f), EPS2(0.0f), EPS4(0.0f)
@@ -128,9 +128,9 @@ public:
 
 		/* Struct member functions */
 		DS_BCON() : BW{}, DX(0.0f), DY(0.0f), U(0.0f), Vv(0.0f), DH(0.0f), STH(0.0f), CTH(0.0f), RE(0.0f), CE(0.0f), PE(0.0f),
-				    XMACH(0.0f), S0(0.0f), QN0(0.0f), QT0(0.0f), RI0(0.0f), SE(0.0f), QNE(0.0f), QTE(0.0f),
-					RIE(0.0f), C(0.0f), SB(0.0f), UB(0.0f), VB(0.0f), RB(0.0f), PB(0.0f), REB(0.0f),
-					QN(0.0f), QTT(0.0f)
+				  XMACH(0.0f), S0(0.0f), QN0(0.0f), QT0(0.0f), RI0(0.0f), SE(0.0f), QNE(0.0f), QTE(0.0f),
+				  RIE(0.0f), C(0.0f), SB(0.0f), UB(0.0f), VB(0.0f), RB(0.0f), PB(0.0f), REB(0.0f),
+				  QN(0.0f), QTT(0.0f)
 					{ d_print("Boundary datastructure created")	}
 
 		~DS_BCON()	{ d_print("Boundary datastructure destroyed") }
