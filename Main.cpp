@@ -58,21 +58,6 @@ Code and data structure:
 
 */
 
-/* CPU i7 , clockspeed 2.6 GHz, no multi-threading*/
-/* Matlab: 814 seconds */
-/* Optimizing done:	2n = 20			  Minimum         t_a,b        t_2 a,b         t_a+b          Differntial      % improval 
-V0- Structured data (one big) [BASELINE]         6.1761      	 68.4345       128.007
-  - Structured data (smaller data sets)          5.98996      	60.11329      120.708	      128.54779           0.885          11.49 % 
-V1- Reducing array size (double to float)	 4.04982	 40.8549       81.8442	      109.2894	          0.599          40.01 %
-    to fit more data on cachelines and 
-    ensuring no type conversions
-- 
-*/
-
-/* Log: 
-- Tried breaking down equations in FLUX into smaller equations -> Same/Slower
-- Tried taking out function call for Q_array_reset -> Same/Slower... 
-*/
 // Start of code
 int main()
 {	
